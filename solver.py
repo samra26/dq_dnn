@@ -132,7 +132,7 @@ class Solver(object):
                 self.optimizer.zero_grad()
                 sal_label_coarse = F.interpolate(sal_label, size_coarse, mode='bilinear', align_corners=True)
                 
-                sal_rgb_only = self.net(sal_image)
+                dqscore = self.net(sal_depth)
                 '''sal_rgb_only_loss =  F.binary_cross_entropy_with_logits(sal_rgb_only, sal_label, reduction='sum')
 
                 sal_rgb_only_loss = sal_rgb_only_loss/ (self.iter_size * self.config.batch_size)
