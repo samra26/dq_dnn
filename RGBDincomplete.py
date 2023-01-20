@@ -47,7 +47,7 @@ class RGBD_incomplete(nn.Module):
         
     def forward(self, f_all):
         x1 = self.RGBDInModule(f_all)
-        return x1[1]
+        return x1
 
 
 def build_model(network='cswin', base_model_cfg='cswin'):
