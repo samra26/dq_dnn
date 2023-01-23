@@ -135,8 +135,8 @@ class Solver(object):
                 sal_image_e = F.interpolate(sal_image_e, size_coarse, mode='bilinear', align_corners=True)
                 
                 dqscore = self.net(sal_depth)
-                print('out',dq_score.shape())
-                print('in',sal_image_e.shape())
+                print('out',dq_score.shape)
+                print('in',sal_image_e.shape)
                 dq_loss=directed_hausdorff(sal_depth[0,:,:].numpy(), sal_image_e[0,:,:].numpy()[0]
                 r_dq_loss += dq_loss.item()* sal_depth.size(0)
                 dq_loss.backward()
