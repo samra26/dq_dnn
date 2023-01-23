@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     # Hyper-parameters
     parser.add_argument('--n_color', type=int, default=3)
-    parser.add_argument('--lr', type=float, default=0.00005)  # Learning rate resnet:4e-4
+    parser.add_argument('--lr', type=float, default=0.001)  # Learning rate resnet:4e-4
     parser.add_argument('--wd', type=float, default=0.0005)  # Weight decay
     parser.add_argument('--momentum', type=float, default=0.99)
     parser.add_argument('--image_size', type=int, default=384)
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     parser.add_argument('--arch', type=str, default='cswin'
                         , choices=['resnet', 'vgg','densenet','conformer','cswin'])  # resnet, vgg or densenet
     parser.add_argument('--pretrained_model', type=str, default=pretrained_path)  # pretrained backbone model
-    parser.add_argument('--epoch', type=int, default=50)
+    parser.add_argument('--epoch', type=int, default=20)
     parser.add_argument('--batch_size', type=int, default=1)  # only support 1 now
     parser.add_argument('--num_thread', type=int, default=0)
     parser.add_argument('--load', type=str, default='')  # pretrained JL-DCF model
