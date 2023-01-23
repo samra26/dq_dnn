@@ -2,7 +2,7 @@ import torch
 from torch.nn import functional as F
 from RGBDincomplete import build_model
 import numpy as np
-
+from losses import hausdorff 
 from scipy.spatial.distance import directed_hausdorff
 import os
 import cv2
@@ -137,7 +137,8 @@ class Solver(object):
                 dq_score = self.net(sal_depth)
                 #print('out',dq_score.shape)
                 #print('in',sal_image_e.shape)
-                dq_loss=directed_hausdorff(dq_score, sal_image_e)[0]
+                #dq_loss=directed_hausdorff(dq_score, sal_image_e)[0]
+                dq_loss=hausdorff(dq_score, sal_image_e)
                 r_dq_loss += dq_loss.item()* sal_image_e.size(0)
                 dq_loss.backward()
                 self.optimizer.step()
