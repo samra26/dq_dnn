@@ -1,8 +1,7 @@
 import torch
 
 def hausdorff(x, y):
-    x=x.squeeze()
-    y=y.squeeze()
+ 
     x = x.float()
     y = y.float()
     print(x.shape,y.shape)
