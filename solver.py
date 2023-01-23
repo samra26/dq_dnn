@@ -14,7 +14,7 @@ import torch.nn as nn
 import argparse
 import os.path as osp
 import os
-size_coarse = (10, 10)
+size_coarse = (96,96)
 
 
 
@@ -132,9 +132,11 @@ class Solver(object):
 
                
                 self.optimizer.zero_grad()
-                sal_label_coarse = F.interpolate(sal_label, size_coarse, mode='bilinear', align_corners=True)
+                sal_image_e = F.interpolate(sal_image_e, size_coarse, mode='bilinear', align_corners=True)
                 
                 dqscore = self.net(sal_depth)
+                print('out',dq_score.shape())
+                print('in',sal_image_e.shape())
                 dq_loss=directed_hausdorff(sal_depth[0,:,:].numpy(), sal_image_e[0,:,:].numpy()[0]
                 r_dq_loss += dq_loss.item()* sal_depth.size(0)
                 dq_loss.backward()
