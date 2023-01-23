@@ -51,7 +51,7 @@ class RGBD_incomplete(nn.Module):
         x1,B,H,W = self.RGBDInModule(f_all)
         x_out=x1[1]
         _,_,C=x_out.shape
-        x_out=x_out.transpose(-2,-1).contiguous().view(B, C, H/4, W/4)
+        x_out=x_out.transpose(-2,-1).contiguous().view(B, C, int(H/4), int(W/4))
         print('x_out',x_out.shape)
         x_out=self.conv1x1(x_out)
         print('x_outa',x_out.shape)
