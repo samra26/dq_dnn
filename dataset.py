@@ -65,7 +65,8 @@ class ImageDataTrain(data.Dataset):
         sal_image = sal_image.transpose((2, 0, 1))
         sal_depth = sal_depth.transpose((2, 0, 1))
         #sal_label = sal_label.transpose((2, 0, 1))
-        sal_edge = sal_edge.transpose((2, 0, 1))
+        print('e',sal_edge.shape)
+        #sal_edge = sal_edge.transpose((2, 0, 1))
 
         sal_image = torch.Tensor(sal_image)
         sal_depth = torch.Tensor(sal_depth)
