@@ -183,8 +183,8 @@ def cv_random_crop(image, depth, label,image_size):
     #label = label[top: top + croped, left: left + croped, :]
     image = cv2.resize(image, (image_size, image_size))
     depth = cv2.resize(depth, (image_size, image_size))
-    label = cv2.resize(label, (image_size, image_size))
-    label = label[..., np.newaxis]
+    #label = cv2.resize(label, (image_size, image_size))
+    #label = label[..., np.newaxis]
     return image, depth, label
 
 def cv_random_crop_rgb(image,  label,image_size):
