@@ -138,7 +138,7 @@ class Solver(object):
           
                 #dq_loss=directed_hausdorff(dq_score, sal_image_e)[0]
                 dq_loss=hausdorff(dq_score, sal_image_e)
-                print(dq_loss)
+                #print(dq_loss)
                 r_dq_loss += dq_loss.item()* sal_image_e.size(0)
                 dq_loss.backward()
                 self.optimizer.step()
