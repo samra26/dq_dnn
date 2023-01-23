@@ -52,9 +52,9 @@ class RGBD_incomplete(nn.Module):
         x_out=x1[1]
         _,_,C=x_out.shape
         x_out=x_out.transpose(-2,-1).contiguous().view(B, C, int(H/4), int(W/4))
-        print('x_out',x_out.shape)
+        #print('x_out',x_out.shape)
         x_out=self.conv1x1(x_out)
-        print('x_outa',x_out.shape)
+        #print('x_outa',x_out.shape)
         return x_out
 
 
