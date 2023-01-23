@@ -137,8 +137,8 @@ class Solver(object):
                 dq_score = self.net(sal_depth)
                 print('out',dq_score.shape)
                 print('in',sal_image_e.shape)
-                dq_loss=directed_hausdorff(sal_score[0,:,:].numpy(), sal_image_e[0,:,:].numpy())[0]
-                r_dq_loss += dq_loss.item()* sal_depth.size(0)
+                dq_loss=directed_hausdorff(dq_score[0,:,:].numpy(), sal_image_e[0,:,:].numpy())[0]
+                r_dq_loss += dq_loss.item()* sal_image_e.size(0)
                 dq_loss.backward()
                 self.optimizer.step()
 
