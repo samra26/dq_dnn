@@ -159,6 +159,6 @@ class Solver(object):
             print('Epoch:[%2d/%2d] | Train Loss : %.3f' % (epoch, self.config.epoch,train_loss))
             
         # save model
-        torch.save(self.net.state_dict(), '%s/final.pth' % self.config.save_folder)'''
+        torch.save(self.net.state_dict(), '%s/final.pth' % self.config.save_folder)
         
 
