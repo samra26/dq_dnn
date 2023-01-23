@@ -2,6 +2,8 @@ import torch
 from torch.nn import functional as F
 from RGBDincomplete import build_model
 import numpy as np
+
+from scipy.spatial.distance import directed_hausdorff
 import os
 import cv2
 import time
@@ -113,10 +115,10 @@ class Solver(object):
         loss_vals=  []
         
         for epoch in range(self.config.epoch):
-            r_sal_loss = 0
+            r_dq_loss = 0
             r_sal_loss_item=0
             for i, data_batch in enumerate(self.train_loader):
-                sal_image, sal_depth, sal_label= data_batch['sal_image'], data_batch['sal_depth'], data_batch['sal_label']
+                sal_image, sal_depth, sal_label,sal_image_e= data_batch['sal_image'], data_batch['sal_depth'], data_batch['sal_label'], data_batch['sal_image_e']
                 #sal_image = data_batch['rgb_image']
                 #sal_label= data_batch['rgb_label']
              
@@ -125,7 +127,7 @@ class Solver(object):
                     continue
                 if self.config.cuda:
                     device = torch.device(self.config.device_id)
-                    sal_image, sal_depth, sal_label= sal_image.to(device),sal_depth.to(device),sal_label.to(device)
+                    sal_image, sal_depth, sal_label, sal_image_e= sal_image.to(device),sal_depth.to(device),sal_label.to(device),sal_image_e.to(device)
                 #print('imagename',name,'.....dq score',dq)
 
                
@@ -133,34 +135,23 @@ class Solver(object):
                 sal_label_coarse = F.interpolate(sal_label, size_coarse, mode='bilinear', align_corners=True)
                 
                 dqscore = self.net(sal_depth)
-                '''sal_rgb_only_loss =  F.binary_cross_entropy_with_logits(sal_rgb_only, sal_label, reduction='sum')
-
-                sal_rgb_only_loss = sal_rgb_only_loss/ (self.iter_size * self.config.batch_size)
-                r_sal_loss += sal_rgb_only_loss.data
-                r_sal_loss_item+=sal_rgb_only_loss.item() * sal_image.size(0)
-                sal_rgb_only_loss.backward()
+                dq_loss=directed_hausdorff(sal_depth[0,:,:].numpy(), sal_image_e[0,:,:].numpy()[0]
+                r_dq_loss += dq_loss.item()* sal_depth.size(0)
+                dq_loss.backward()
                 self.optimizer.step()
 
                 if (i + 1) % (self.show_every // self.config.batch_size) == 0:
-                    print('epoch: [%2d/%2d], iter: [%5d/%5d]  ||  sal_rgb_only_loss : %0.4f' % (
-                        epoch, self.config.epoch, i + 1, iter_num, r_sal_loss ))
+                    print('epoch: [%2d/%2d], iter: [%5d/%5d]  ||  dq_loss : %0.4f' % (
+                        epoch, self.config.epoch, i + 1, iter_num, dq_loss ))
                     # print('Learning rate: ' + str(self.lr))
-                    writer.add_scalar('training loss', r_sal_loss / (self.show_every / self.iter_size),
+                    writer.add_scalar('training loss', r_dq_loss / (self.show_every / self.iter_size),
                                       epoch * len(self.train_loader.dataset) + i)
                     
-                    
-                    fsal = sal_rgb_only[0].clone()
-                    fsal = fsal.sigmoid().data.cpu().numpy().squeeze()
-                    fsal = (fsal - fsal.min()) / (fsal.max() - fsal.min() + 1e-8)
-                    writer.add_image('sal_final', torch.tensor(fsal), i, dataformats='HW')
-                    grid_image = make_grid(sal_label[0].clone().cpu().data, 1, normalize=True)
-
-                   
-
+                                       
 
             if (epoch + 1) % self.config.epoch_save == 0:
                 torch.save(self.net.state_dict(), '%s/epoch_%d.pth' % (self.config.save_folder, epoch + 1))
-            train_loss=r_sal_loss_item/len(self.train_loader.dataset)
+            train_loss=r_dq_loss/len(self.train_loader.dataset)
             loss_vals.append(train_loss)
             
             print('Epoch:[%2d/%2d] | Train Loss : %.3f' % (epoch, self.config.epoch,train_loss))
