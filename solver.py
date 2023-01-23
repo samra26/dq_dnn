@@ -122,9 +122,9 @@ class Solver(object):
                 #sal_image = data_batch['rgb_image']
                 #sal_label= data_batch['rgb_label']
              
-                if (sal_image.size(2) != sal_label.size(2)) or (sal_image.size(3) != sal_label.size(3)):
+                '''if (sal_image.size(2) != sal_label.size(2)) or (sal_image.size(3) != sal_label.size(3)):
                     print('IMAGE ERROR, PASSING```')
-                    continue
+                    continue'''
                 if self.config.cuda:
                     device = torch.device(self.config.device_id)
                     sal_image, sal_depth, sal_label, sal_image_e= sal_image.to(device),sal_depth.to(device),sal_label.to(device),sal_image_e.to(device)
