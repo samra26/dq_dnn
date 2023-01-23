@@ -180,7 +180,7 @@ def cv_random_crop(image, depth, label,image_size):
 
     image = image[top: top + croped, left: left + croped, :]
     depth = depth[top: top + croped, left: left + croped, :]
-    label = label[top: top + croped, left: left + croped, :]
+    #label = label[top: top + croped, left: left + croped, :]
     image = cv2.resize(image, (image_size, image_size))
     depth = cv2.resize(depth, (image_size, image_size))
     label = cv2.resize(label, (image_size, image_size))
