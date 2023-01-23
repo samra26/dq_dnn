@@ -64,12 +64,12 @@ class ImageDataTrain(data.Dataset):
         sal_image, sal_depth, sal_label = cv_random_crop(sal_image, sal_depth, sal_label, self.image_size)
         sal_image = sal_image.transpose((2, 0, 1))
         sal_depth = sal_depth.transpose((2, 0, 1))
-        sal_label = sal_label.transpose((2, 0, 1))
+        #sal_label = sal_label.transpose((2, 0, 1))
         sal_edge = sal_edge.transpose((2, 0, 1))
 
         sal_image = torch.Tensor(sal_image)
         sal_depth = torch.Tensor(sal_depth)
-        sal_label = torch.Tensor(sal_label)
+        #sal_label = torch.Tensor(sal_label)
         sal_edge = torch.Tensor(sal_edge)
         dq=depth_quality_score(sal_depth)
         sample = {'sal_image': sal_image, 'sal_depth': sal_depth, 'sal_label': sal_label, 'sal_image_e': sal_edge,'depth_quality_score':dq,'name': self.sal_list[item % self.sal_num].split()[0].split('/')[1]}
