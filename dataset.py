@@ -66,7 +66,8 @@ class ImageDataTrain(data.Dataset):
         sal_depth = sal_depth.transpose((2, 0, 1))
         #sal_label = sal_label.transpose((2, 0, 1))
         print('e',sal_edge.shape)
-        #sal_edge = sal_edge.transpose((2, 0, 1))
+        sal_edge = sal_edge.transpose((2, 0, 1))
+        print('ea',sal_edge.shape)
 
         sal_image = torch.Tensor(sal_image)
         sal_depth = torch.Tensor(sal_depth)
@@ -130,6 +131,8 @@ def load_image(path,image_size):
     img_e = np.array(img_e, dtype=np.uint8)
     img_e = cv2.Canny(img_e,100,200)
     th, im_e = cv2.threshold(img_e, img_e.mean(), 1, cv2.THRESH_OTSU)
+    im_e=im_e[..., np.newaxis]
+    
     
     in_ = np.array(im, dtype=np.float32)
     im_size = tuple(in_.shape[:2])
