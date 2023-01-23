@@ -1,6 +1,6 @@
 import torch
 
-def hausdorff_2d_torch(x, y):
+def hausdorff(x, y):
     x=x.squeeze()
     y=y.squeeze()
     x = x.float()
