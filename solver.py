@@ -95,7 +95,7 @@ class Solver(object):
 
                 #input = torch.cat((images, depth), dim=0)
                 preds = self.net(depth)
-                #print(preds.shape)
+                print(preds,preds.shape)
                 preds = F.interpolate(preds, tuple(im_size), mode='bilinear', align_corners=True)
                 pred = np.squeeze(torch.sigmoid(preds)).cpu().data.numpy()
 
