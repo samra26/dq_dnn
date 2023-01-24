@@ -95,15 +95,15 @@ class Solver(object):
 
                 #input = torch.cat((images, depth), dim=0)
                 preds = self.net(depth)
-                print(preds,preds.shape)
+                #print(preds,preds.shape)
                 preds = F.interpolate(preds, tuple(im_size), mode='bilinear', align_corners=True)
                 pred = np.squeeze(torch.sigmoid(preds)).cpu().data.numpy()
 
-                #pred = (pred - pred.min()) / (pred.max() - pred.min() + 1e-8)
-                #multi_fuse = 255 * pred
-                pred= np.array(pred, dtype=np.uint8)
-   
-                th, multi_fuse = cv2.threshold(pred,pred.mean(), 1, cv2.THRESH_OTSU)
+                pred = (pred - pred.min()) / (pred.max() - pred.min() + 1e-8)
+                multi_fuse = 255 * pred
+                multi_fuse = np.array(multi_fuse , dtype=np.uint8)
+                print(multi_fuse ,multi_fuse.shape)
+                th, multi_fuse = cv2.threshold(multi_fuse ,multi_fuse .mean(), 1, cv2.THRESH_OTSU)
                 filename = os.path.join(self.config.test_folder, name[:-4] + '_convtran.png')
                 cv2.imwrite(filename, multi_fuse)
         time_e = time.time()
